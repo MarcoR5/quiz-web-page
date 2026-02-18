@@ -5,14 +5,15 @@ export default function Home() {
   
   const [qIndex, setQindex] = useState(0);
   const [map, setMap ] = useState(0);
-  const [finalMix, setFinalMix] = useState([])
+  const [finalMix, setFinalMix] = useState<string[]>([]);
   const [done, setDone] = useState(false);
   const [text, setText] = useState("NEXT");
   const [score, setScore] = useState(0);
   //SAVING STATE SO WHEN GOING BACK IN QUIZ IT SHOWS WHAT ANSWERS THE USER PICKED PREVIOUSLY
-  const [userAnswers, setUserAnswers] = useState({});
+  const [userAnswers, setUserAnswers] = useState<Record<number, string>>({});
+
   //VALIDATING IF USER HAS CLICKED A ANSWER SO THAT LOGIC CAN MOVE FORWARD TO NEXT QUESTION
-  const [clicked, setClicked] = useState({});
+  const [clicked, setClicked] = useState<Record<number, string>>({});
   const [message, setMessage] = useState("");
   const questions =[
     'What is the largest country in the world by land area?',
@@ -64,7 +65,7 @@ const currentA = answers[qIndex];
 
  useEffect(() => {
     if (!currentA) return;
-  const mixedQ = (array) => {
+  const mixedQ = (array:string[]) => {
   let currentIndex = array.length;
   let randomIndex;
 
@@ -85,8 +86,8 @@ const currentA = answers[qIndex];
  }, [qIndex] )
 
 //handling click on answer
-const handleAnswer = (event) => {
- const selectedAnswer = event.target.textContent;
+const handleAnswer = (selectedAnswer: string) => {
+ 
   if(selectedAnswer === correctAnswers[qIndex]){
    setScore(score+1);
          
@@ -115,7 +116,7 @@ setUserAnswers((prev) => ({
 const currentAnswers = finalMix.map((answer) => 
       <button className={`w-120 h-20 col-span-1 rounded-full text-white  text-2xl ${
          userAnswers[qIndex] === answer? answer === correctAnswers[qIndex]? 'bg-green-500' : 'bg-red-500'  : 'bg-blue2'
-      }`} onClick={handleAnswer} key={answer}>
+      }`}  onClick={() => handleAnswer(answer)} key={answer}>
     {answer}
   </button>
 
